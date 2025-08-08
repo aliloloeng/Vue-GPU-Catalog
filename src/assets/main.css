@@ -1,0 +1,15 @@
+
+@import "tailwindcss";
+
+@layer components{
+  .flexer{
+    @apply flex justify-between items-center;
+  }
+  .defrence {
+    @apply px-35 ;
+  }
+  .btn{
+    @apply  mt-8 cursor-pointer bg-[#3b5cdf] rounded-md text-white font-semibold transition duration-300 ease-in-out hover:bg-blue-700 hover:ring-2  hover:shadow-lg hover:shadow-blue-500 hover:ring-blue-300 focus:shadow-blue-400 px-5 py-2
+  }
+
+}

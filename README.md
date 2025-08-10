@@ -7,7 +7,7 @@
 A sleek and modern web application for browsing a comprehensive catalog of GPUs, viewing performance benchmarks, and exploring various tech products. This project was built as a personal resume piece to showcase skills in Vue.js and modern frontend development practices.
 
 ## 📸 Screenshots
-![ image alt]()
+![ image alt](https://github.com/aliloloeng/Vue-GPU-Catalog/blob/bf08079cb7ac7b0b0da0c561678dd730d8375724/FULLPAGE_gpu-cv.png)
 
 ## 🚀 Features
 

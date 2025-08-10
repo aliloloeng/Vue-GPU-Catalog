@@ -6,20 +6,8 @@
 
 A sleek and modern web application for browsing a comprehensive catalog of GPUs, viewing performance benchmarks, and exploring various tech products. This project was built as a personal resume piece to showcase skills in Vue.js and modern frontend development practices.
 
----
-
-### ✨ [Live Demo Link &rarr;](https://your-demo-link-here.com)
-
-*(Replace the link above with your actual deployment URL once you have one!)*
-
 ## 📸 Screenshots
-
-*(This is a great place to show off your work! Add a few screenshots of your application here. You can use the "Drag-and-Drop" trick I mentioned earlier to get the links for your images.)*
-
-|                  Desktop View                  |                 Mobile View                  |
-| :--------------------------------------------: | :------------------------------------------: |
-| ![Desktop Screenshot](https://via.placeholder.com/400x250.png?text=Your+App+Screenshot) | ![Mobile Screenshot](https://via.placeholder.com/200x350.png?text=Your+App+Screenshot) |
-
+![ image alt]()
 
 ## 🚀 Features
 

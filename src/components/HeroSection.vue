@@ -1,6 +1,6 @@
 <template>
-  <main class="bg-[#000433] relative h-140 grid items-center ">
-    <img class="absolute inset-y-0 right-0 h-full " src="../assets/logoMain.jpg" alt="gpu_intro">
+  <section class="bg-[#000433] relative h-140 grid items-center ">
+    <img class="absolute inset-y-0 right-0 h-full " src="../assets/images/logoMain.jpg" alt="gpu_intro">
     <!-- <div class="absolute inset-0 bg-black/40 z-10 "></div> -->
     <div class="pl-35 z-20 ">
        <h1>
@@ -23,7 +23,7 @@
           compare GPUs
         </button>
       </div>
-  </main>
+  </section>
 </template>
 
 <script setup>

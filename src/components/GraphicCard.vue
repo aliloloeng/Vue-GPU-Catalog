@@ -1,5 +1,5 @@
   <template>
-  <main class="defrence mx-auto pb-30 bg-[#06101e]">
+  <section class="defrence mx-auto pb-30 bg-[#06101e]">
       <div class=" flex justify-between items-center mb-6">
         <h1 class="text-3xl font-semibold text-white">Graphics Cards</h1>
         <button
@@ -12,7 +12,7 @@
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
               d="M9 5l7 7-7 7" />
           </svg>
-          <svg v-else xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 rotate-180" fill="none"
+          <svg v-else xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 rotate-180 " fill="none"
             viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
               d="M9 5l7 7-7 7" />
@@ -29,10 +29,10 @@
           @select="selectedId = card.id"
         />
       </div>
-    </main>
+    </section>
   </template>
   <script setup>
-  import GPUpng from '@/assets/images.png'
+  import GPUpng from '@/assets/images/images.png'
   import { computed, ref } from 'vue';
   import GraphicCardsItems from './GraphicCardsItems.vue';
 

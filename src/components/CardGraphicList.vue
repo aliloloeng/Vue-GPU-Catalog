@@ -1,5 +1,5 @@
 <template>
-  <main class="bg-[#06101e]  pb-25 defrence">
+  <section class="bg-[#06101e] pb-25 defrence">
     <div class="mb-10">
       <h1>GraphicCard</h1>
     </div>
@@ -11,10 +11,10 @@
       />
     </div>
 
-  </main>
+  </section>
 </template>
 <script setup>
-import intel from '@/assets/intel.png'
+import intel from '@/assets/images/intel.png'
 import CardGraphicNameItems from './CardGraphicNameItems.vue';
 import { ref } from 'vue';
 
@@ -109,8 +109,5 @@ import { ref } from 'vue';
   @reference "../assets/main.css";
   p,li{
     @apply text-white ;
-  }
-  h1{
-    @apply leading-12 text-4xl font-semibold py-5 w-130  text-white;
   }
   </style>

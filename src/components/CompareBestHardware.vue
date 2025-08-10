@@ -1,6 +1,6 @@
 <template>
-  <main class="bg-[#06101e] relative h-140 grid items-center " >
-    <img class="absolute inset-y-0 right-0 h-full py-15" src="../assets/compareGPU.png" alt="compareGpu">
+  <section class="bg-[#06101e] relative h-140 grid items-center " >
+    <img class="absolute inset-y-0 right-0 h-full py-15" src="../assets/images/compareGPU.png" alt="compareGpu">
 
     <div class="pl-35 z-20 ">
       <h1>
@@ -10,19 +10,18 @@
          Easily compare the specifications and performance metrics of your favorite GPUs. Make informed decisions for your gaming, creative, or professional needs with detailed side-by-side comparisons.
       </p>
       <div class="flex gap-23 mt-5">
-        <div>
-            <ul>
-              <li><img class="inline w-4 mr-2" src="../assets/check.png " alt="check">Comprehensive Specs</li>
-              <li><img class="inline w-4 mr-2" src="../assets/check.png " alt="check">Performance Metrics</li>
-              <li><img class="inline w-4 mr-2" src="../assets/check.png " alt="check">Custom Filters</li>
-            </ul>
-          </div>
-          <div>
-            <ul>
-              <li><img class="inline w-4 mr-2" src="../assets/check.png " alt="check">Multi-GPU Comparison</li>
-              <li><img class="inline w-4 mr-2" src="../assets/check.png " alt="check">User-Friendly Interface</li>
-            </ul>
-          </div>
+        <ul>
+          <li v-for="feature in features.slice(0, 3)" :key="feature">
+            <img class="inline w-4 mr-2" src="../assets/images/check.png" alt="check_image">
+            {{ feature }}
+          </li>
+        </ul>
+        <ul>
+          <li v-for="feature in features.slice(3)" :key="feature">
+            <img class="inline w-4 mr-2" src="../assets/images/check.png" alt="check_image">
+            {{ feature }}
+          </li>
+        </ul>
       </div>
       <button class= " btn">
           compare GPUs
@@ -30,9 +29,17 @@
 
     </div>
 
-  </main>
+  </section>
 </template>
-<script setup></script>
+<script setup>
+  const features = [
+    'Comprehensive Specs',
+    'Performance Metrics',
+    'Custom Filters',
+    'Multi-GPU Comparison',
+    'User-Friendly Interface'
+  ];
+</script>
 <style scoped>
   @reference "../assets/main.css";
   h1{

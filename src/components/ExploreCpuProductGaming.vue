@@ -1,14 +1,13 @@
 <template>
-  <main class="bg-[#06101e] pb-25 defrence">
+  <section class="bg-[#06101e] pb-25 defrence">
     <div class="flex flex-col items-center justify-center text-center mb-[45px]">
       <h1 class="text-2xl">Explore Our Product Categories</h1>
       <p class="text-center w-190">Discover a wide range of products tailored to meet your needs. From the latest innovations to timeless essentials, find what you're looking for in one place.</p>
     </div>
     <section class="container_card">
-      <div v-for="card in ExploreCpuProductGaming"
+      <div v-for="card in products"
       :key="card.id"
-      :card="card"
-      class="w-[350px] rounded-lg bg-[#1d2530]"
+      class="w-full rounded-lg bg-[#1d2530]"
       >
         <img class="rounded-t-lg" :src="card.img" alt="images">
         <div class="p-5">
@@ -37,15 +36,15 @@
         </div>
       </div>
     </section>
-  </main>
+  </section>
 </template>
 <script setup>
-import CaseComputerImage1 from '../assets/christian-wiediger-sax9kbf6fvc-unsplash.jpg'
-import CaseComputerImage2 from '../assets/christian-wiediger-kf_korybd1g-unsplash.jpg'
-import GPUImage from '../assets/thomas-foster-vWgoeEYdtIY-unsplash.jpg'
+import CaseComputerImage1 from '../assets/images/christian-wiediger-sax9kbf6fvc-unsplash.jpg'
+import CaseComputerImage2 from '../assets/images/christian-wiediger-kf_korybd1g-unsplash.jpg'
+import GPUImage from '../assets/images/thomas-foster-vWgoeEYdtIY-unsplash.jpg'
 import { reactive } from 'vue';
 
-  const ExploreCpuProductGaming = reactive([
+  const products  = reactive([
     {
       id:1,
       name:"James Dyson",

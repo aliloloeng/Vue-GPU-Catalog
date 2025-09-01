@@ -15,8 +15,8 @@
     </div>
 
     <div class="dark_light-btn">
-      <button @click="toggleTheme">
-        <img :src="isDark ? sunIcon : moonIcon" alt="DarkModeBtn" class="dark_light-mode">
+      <button @click="themeStore.toggleTheme">
+        <img :src="themeStore.isDark ? sunIcon : moonIcon" alt="DarkModeBtn" class="dark_light-mode">
       </button>
     </div>
 
@@ -26,33 +26,14 @@
 <script setup>
 import sunIcon from '../assets/images/sun.png'
 import moonIcon from '../assets/images/moon.png'
-import { onMounted, ref } from 'vue';
+import { onMounted } from 'vue';
+import { useThemeStore } from '@/stores/counter.js';
 
-const isDark = ref(false);
+const themeStore = useThemeStore();
 
 onMounted(() => {
-  const savedTheme = localStorage.getItem('theme');
-  if (savedTheme) {
-    isDark.value = savedTheme === 'dark';
-  } else {
-    isDark.value = window.matchMedia('(prefers-color-scheme: dark)').matches;
-  }
-  updateHtmlClass();
+  themeStore.loadTheme();
 });
-
-function toggleTheme() {
-  isDark.value = !isDark.value;
-  localStorage.setItem('theme', isDark.value ? 'dark' : 'light');
-  updateHtmlClass();
-}
-
-function updateHtmlClass() {
-  if (isDark.value) {
-    document.documentElement.classList.add('dark');
-  } else {
-    document.documentElement.classList.remove('dark');
-  }
-}
 </script>
 
 

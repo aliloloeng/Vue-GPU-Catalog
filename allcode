@@ -1,0 +1,1066 @@
+src/components/HeaderComponent.vue
+
+<template>
+  <header class=" defrence flexer transition-colors duration-300 bg-[#040e1a] ">
+
+    <div class="icon_header flexer ">
+      <img src="../assets/images/graphic-card.png" alt="gpu">
+    </div>
+
+    <div>
+      <nav class="header_nav ">
+        <router-link to="/" class="dif_text-nav">Home</router-link>
+        <router-link to="/compare" class="nav_text">Compare</router-link>
+        <router-link to="/blog" class="nav_text">Blog</router-link>
+        <router-link to="/contact" class="nav_text">Contact</router-link>
+      </nav>
+    </div>
+
+    <div class="dark_light-btn">
+      <button @click="toggleTheme">
+        <img :src="isDark ? sunIcon : moonIcon" alt="DarkModeBtn" class="dark_light-mode">
+      </button>
+    </div>
+
+  </header>
+</template>
+
+<script setup>
+import sunIcon from '../assets/images/sun.png'
+import moonIcon from '../assets/images/moon.png'
+import { onMounted, ref } from 'vue';
+
+const isDark = ref(false);
+
+onMounted(() => {
+  const savedTheme = localStorage.getItem('theme');
+  if (savedTheme) {
+    isDark.value = savedTheme === 'dark';
+  } else {
+    isDark.value = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  }
+  updateHtmlClass();
+});
+
+function toggleTheme() {
+  isDark.value = !isDark.value;
+  localStorage.setItem('theme', isDark.value ? 'dark' : 'light');
+  updateHtmlClass();
+}
+
+function updateHtmlClass() {
+  if (isDark.value) {
+    document.documentElement.classList.add('dark');
+  } else {
+    document.documentElement.classList.remove('dark');
+  }
+}
+</script>
+
+
+<style scoped>
+  @reference "../assets/main.css";
+
+  .icon_header{
+    @apply w-18 h-23 ;
+  }
+  .nav_text{
+    @apply text-[#cbccd3] font-bold;
+  }
+  .header_nav{
+    @apply flex gap-10 ;
+  }
+  .dark_light-mode{
+    @apply w-7;
+  }
+  .dif_text-nav{
+    @apply font-bold text-[#4159b8];
+  }
+</style>
+
+
+src/components/HeroSection.vue
+
+
+<template>
+  <section class="bg-[#000433] relative h-140 grid items-center ">
+    <img class="absolute inset-y-0 right-0 h-full " src="../assets/images/logoMain.jpg" alt="gpu_intro">
+    <!-- <div class="absolute inset-0 bg-black/40 z-10 "></div> -->
+    <div class="pl-35 z-20 ">
+       <h1>
+          <BlurText
+            class="w-100 text-4xl/15 font-semibold text-left text-white"
+            text="Find the Perfect GPU for Your Needs."
+            :delay="200"
+            animate-by="words"
+            direction="top"
+            :threshold="0.1"
+            root-margin="0px"
+            :step-duration="0.35"
+            @animation-complete="handleAnimationComplete"
+          />
+        </h1>
+        <p class="mt-4 text-[#cbccd3] max-w-xl">
+          Unlock the ultimate resource for GPU enthusiasts and professionals alike. Dive into a comprehensive platform that empowers you to compare, benchmark, and explore graphics cards with unparalleled precision.
+        </p>
+        <button class= "btn">
+          compare GPUs
+        </button>
+      </div>
+  </section>
+</template>
+
+<script setup>
+  import BlurText from './BlurText.vue';
+
+  const handleAnimationComplete = () => {
+    console.log('All animations complete!');
+  };
+
+</script>
+<style scoped>
+ @reference "../assets/main.css";
+  h1,p , button{
+  @apply text-[#cbccd3];
+ }
+
+</style>
+
+
+src/components/CompareBestHardware.vue
+
+
+<template>
+  <section class="bg-[#06101e] relative h-140 grid items-center " >
+    <img class="absolute inset-y-0 right-0 h-full py-15" src="../assets/images/compareGPU.png" alt="compareGpu">
+
+    <div class="pl-35 z-20 ">
+      <h1>
+        Compare and Choose the Best Hardware
+      </h1>
+      <p class="w-135">
+         Easily compare the specifications and performance metrics of your favorite GPUs. Make informed decisions for your gaming, creative, or professional needs with detailed side-by-side comparisons.
+      </p>
+      <div class="flex gap-23 mt-5">
+        <ul>
+          <li v-for="feature in features.slice(0, 3)" :key="feature">
+            <img class="inline w-4 mr-2" src="../assets/images/check.png" alt="check_image">
+            {{ feature }}
+          </li>
+        </ul>
+        <ul>
+          <li v-for="feature in features.slice(3)" :key="feature">
+            <img class="inline w-4 mr-2" src="../assets/images/check.png" alt="check_image">
+            {{ feature }}
+          </li>
+        </ul>
+      </div>
+      <button class= " btn">
+          compare GPUs
+      </button>
+
+    </div>
+
+  </section>
+</template>
+<script setup>
+  const features = [
+    'Comprehensive Specs',
+    'Performance Metrics',
+    'Custom Filters',
+    'Multi-GPU Comparison',
+    'User-Friendly Interface'
+  ];
+</script>
+<style scoped>
+  @reference "../assets/main.css";
+  h1{
+    @apply leading-12 text-4xl font-semibold py-5 w-130  text-white;
+  }
+  p , button , li{
+  @apply text-[#cbccd3] ;
+ }
+ ul{
+  @apply leading-9
+ }
+</style>
+
+
+src/components/FeaturedGraphicsCard.vue
+
+
+<template>
+  <section class="bg-[#06101e] pb-5 defrence">
+    <h1>Featured Graphics Card</h1>
+
+    <div class="flex items-center gap-5 mb-20">
+      <DropdownItems
+        title="Manufacturer"
+        :items="manufacturerItems"
+        @item-selected="handleFilterSelection"
+      />
+      <DropdownItems
+        title="GPU Series"
+        :items="seriesItems"
+        @item-selected="handleFilterSelection"
+      />
+      <DropdownItems
+        title="Price"
+        :items="priceItems"
+        @item-selected="handleFilterSelection"
+      />
+    </div>
+
+    <!-- The div that displayed the selected filter has been removed, as you requested. -->
+
+  </section>
+</template>
+
+<script setup>
+import { ref } from 'vue';
+
+import DropdownItems from './DropdownItems.vue';
+
+const manufacturerItems = ['NVIDIA', 'AMD', 'Intel', 'RYZEN'];
+const seriesItems = ['GeForce RTX 40 Series', 'Radeon RX 7000 Series', 'Intel Arc Series'];
+const priceItems = ['Under $300', '$300 – $700', 'Above $700'];
+
+const selectedFilter = ref('');
+
+function handleFilterSelection(item) {
+  console.log(`A new filter was selected: ${item}`);
+  selectedFilter.value = item;
+}
+</script>
+
+<style scoped>
+  @reference "../assets/main.css";
+  h1{
+    @apply leading-12 text-4xl font-semibold py-5 w-130  text-white;
+  }
+</style>
+
+
+
+src/components/DropdownItems.vue
+
+
+
+<template>
+  <div class="relative inline-block text-left" ref="dropdownRef">
+
+    <button
+      @click="toggleDropdown"
+      class="flex items-center justify-center gap-2 px-6 py-3 bg-[#06101e] text-[#cbccd3] rounded-xl border-1 transition-all duration-300 hover:bg-blue-600 hover:text-white"
+      :aria-expanded="isOpen"
+      aria-haspopup="true"
+    >
+      {{ title }}
+      <svg
+        class="w-4 h-4 transition-transform duration-300 fill-current"
+        :class="{ 'rotate-180': isOpen }"
+        viewBox="0 0 360 360"
+      >
+        <path d="M325.607,79.393c-5.857-5.857-15.355-5.858-21.213,0.001l-139.39,139.393L25.607,79.393 c-5.857-5.857-15.355-5.858-21.213,0.001c-5.858,5.858-5.858,15.355,0,21.213l150.004,150c2.813,2.813,6.628,4.393,10.606,4.393 s7.794-1.581,10.606-4.394l149.996-150C331.465,94.749,331.465,85.251,325.607,79.393z"/>
+      </svg>
+    </button>
+
+    <transition
+      enter-active-class="transition ease-out duration-100"
+      enter-from-class="transform opacity-0 scale-95"
+      enter-to-class="transform opacity-100 scale-100"
+      leave-active-class="transition ease-in duration-75"
+      leave-from-class="transform opacity-100 scale-100"
+      leave-to-class="transform opacity-0 scale-95"
+    >
+      <div
+        v-if="isOpen"
+        class="absolute left-0 mt-2 w-full bg-[#06101e] border border-[#051730] rounded-2xl origin-top z-20"
+      >
+        <button
+          v-for="item in items"
+          :key="item"
+          @click="selectItem(item)"
+          class="block w-full text-left px-4 py-3 hover:bg-blue-600 rounded-xl hover:text-white transition-all text-white"
+        >
+          {{ item }}
+        </button>
+      </div>
+    </transition>
+  </div>
+</template>
+
+<script setup>
+import { ref, onMounted, onUnmounted } from 'vue';
+
+
+defineProps({
+  title: {
+    type: String,
+    required: true,
+  },
+  items: {
+    type: Array,
+    required: true,
+  },
+});
+
+const emit = defineEmits(['item-selected']);
+
+const isOpen = ref(false);
+const dropdownRef = ref(null);
+
+function toggleDropdown() {
+  isOpen.value = !isOpen.value;
+}
+
+function selectItem(item) {
+  emit('item-selected', item);
+  isOpen.value = false;
+}
+
+const handleClickOutside = (event) => {
+  if (dropdownRef.value && !dropdownRef.value.contains(event.target)) {
+    isOpen.value = false;
+  }
+};
+
+const handleEscKey = (event) => {
+  if (event.key === 'Escape') {
+    isOpen.value = false;
+  }
+};
+
+onMounted(() => {
+  document.addEventListener('mousedown', handleClickOutside);
+  document.addEventListener('keydown', handleEscKey);
+});
+
+onUnmounted(() => {
+  document.removeEventListener('mousedown', handleClickOutside);
+  document.removeEventListener('keydown', handleEscKey);
+});
+</script>
+
+
+
+
+src/components/GraphicCard.vue
+
+
+  <template>
+  <section class="defrence mx-auto pb-30 bg-[#06101e]">
+      <div class=" flex justify-between items-center mb-6">
+        <h1 class="text-3xl font-semibold text-white">Graphics Cards</h1>
+        <button
+          @click="toggleAll"
+          class="text-sm font-medium flex items-center gap-1 text-blue-400 hover:underline"
+        >
+          <span>{{ showAll ? 'Show Less' : 'See All' }}</span>
+          <svg v-if="!showAll" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none"
+            viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M9 5l7 7-7 7" />
+          </svg>
+          <svg v-else xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 rotate-180 " fill="none"
+            viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M9 5l7 7-7 7" />
+          </svg>
+        </button>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <GraphicCardsItems
+          v-for="card in displayedCards"
+          :key="card.id"
+          :card="card"
+          :selected="selectedId === card.id"
+          @select="selectedId = card.id"
+        />
+      </div>
+    </section>
+  </template>
+  <script setup>
+  import GPUpng from '@/assets/images/images.png'
+  import { computed, ref } from 'vue';
+  import GraphicCardsItems from './GraphicCardsItems.vue';
+
+  const allCards =ref([
+    {
+      id: 1,
+      name: 'INNO3D GeForce GTX 980 Ti',
+      memory: '2 GB',
+      clock: '1.00 GHz',
+      power: '30 W',
+      date: 'October 2024',
+      price: '$75',
+      speed:'1.38 GHz',
+      img: GPUpng
+    },
+    {
+      id: 2,
+      name: 'INNO3D GeForce GTX 980 Ti',
+      memory: '8 GB',
+      clock: '1.00 GHz',
+      power: '30 W',
+      date: 'October 2024',
+      price: '$75',
+      speed:'1.38 GHz',
+      img: GPUpng
+    },
+    {
+      id: 3,
+      name: 'INNO3D GeForce GTX 980 Ti',
+      memory: '6 GB',
+      clock: '1.00 GHz',
+      power: '30 W',
+      date: 'October 2024',
+      price: '$75',
+      speed:'1.38 GHz',
+      img: GPUpng
+    },
+    {
+      id: 4,
+      name: 'INNO3D GeForce GTX 1080',
+      memory: '8 GB',
+      clock: '1.60 GHz',
+      power: '180 W',
+      date: 'September 2024',
+      price: '$120',
+      speed:'1.38 GHz',
+      img: GPUpng
+    },
+    {
+      id: 5,
+      name: 'INNO3D GeForce RTX 2060',
+      memory: '6 GB',
+      clock: '1.70 GHz',
+      power: '160 W',
+      date: 'August 2024',
+      price: '$200',
+      speed:'1.38 GHz',
+      img: GPUpng
+    }
+  ]);
+  const showAll = ref(false);
+  const selectedId = ref(2);
+
+  const displayedCards = computed(()=>( showAll.value ? allCards.value : allCards.value.slice(0,3)));
+
+  function toggleAll(){
+    showAll.value = !showAll.value
+  }
+  </script>
+  <style scoped></style>
+
+
+src/components/GraphicCardsItems.vue
+
+
+<template>
+  <div
+    @click="onSelect"
+    :class="[
+      'relative rounded-2xl p-5 flex flex-col justify-between cursor-pointer shadow-lg transition-all duration-500 ',
+      selected
+        ? 'bg-gradient-to-br from-[#1f2f6f] to-[rgb(27,40,96)] ring-2 ring-blue-500 shadow-blue-700/100 scale-105'
+        : 'bg-[#1e2a4f] hover:shadow-xl'
+        ]">
+        <div class="">
+          <img  class="w-full mb-5 rounded-[10px]" :src="card.img" alt="gpu" />
+          <div class="flex-1">
+            <div class="font-semibold text-white mb-5">{{ card.name }}</div>
+            <div class="flex justify-between flex-wrap gap-3 text-[14px] font-sans text-gray-300">
+              <section>
+                <div class="card_info">
+                  <IconClock class="w-5"/>
+                  {{ card.clock }}
+                </div>
+                <div class="card_info">
+                  <IconMemory class="w-5" />
+                  {{ card.memory }}
+                </div>
+                <div class="card_info">
+                 <IconData class="w-5" />
+                  {{ card.date }}
+                </div>
+              </section>
+              <section >
+                <div class="card_info">
+                  <IconSpeed class="w-5"/>
+                  {{ card.speed }}
+                </div>
+                <div class="card_info">
+                  <IconPower class="w-5"/>
+                  {{ card.power }}
+                </div>
+                <div class="card_info">
+                  <IconPrice class="w-5"/>
+                  {{ card.price }}
+                </div>
+              </section>
+            </div>
+          </div>
+        </div>
+        <div class="">
+          <a href="#" class="flex-1 text-lg flex items-center justify-center w-full btn z-20">
+            Buy Now
+          </a>
+        </div>
+      </div>
+</template>
+<script setup>
+import IconClock from './iconClock.vue';
+import IconData from './IconData.vue';
+import IconMemory from './IconMemory.vue';
+import IconPower from './IconPower.vue';
+import IconPrice from './IconPrice.vue';
+import IconSpeed from './IconSpeed.vue';
+
+  const props = defineProps({
+    card:{
+      type:Object,
+      required:true
+    },
+    selected:{
+      type:Boolean,
+      default:false
+    }
+  });
+
+//  defineEmits(['select'])
+
+const emit = defineEmits(['select']);
+
+function onSelect() {
+  emit('select', props.card.id);
+}
+
+</script>
+<style scoped>
+@reference "../assets/main.css";
+  .card_info{
+    @apply flex items-center gap-1 mb-2;
+  }
+</style>
+
+
+
+src/components/ExploreProducts.vue
+
+
+<template>
+  <section class="bg-[#06101e] pt-10 pb-25 defrence">
+    <div class="flex flex-col items-center justify-center text-center mb-[45px]">
+      <h2 class="text-2xl">Explore Our Product Categories</h2>
+      <p class="#1d2530">Discover a wide range of products tailored to meet your needs. From the latest innovations to timeless essentials, find what you're looking for in one place.</p>
+    </div>
+    <div class="cards_grided">
+      <CategoryCard
+        v-for="category in topRowCategories"
+        :key="category.title"
+        :title="category.title"
+        :description="category.description"
+      >
+        <template #icon>
+          <component :is="category.icon" />
+        </template>
+      </CategoryCard>
+      </div>
+      <div class="flex justify-center gap-5 mt-5">
+        <CategoryCard
+            v-for="category in bottomRowCategories"
+            :key="category.title"
+            :title="category.title"
+            :description="category.description"
+            >
+            <template #icon>
+                <component :is="category.icon" />
+            </template>
+        </CategoryCard>
+      </div>
+
+  </section>
+</template>
+<script setup>
+import { shallowRef } from 'vue';
+import CategoryCard from './CategoryCard.vue';
+import IconGpu from './IconGpu.vue';
+import IconCpu from './IconCpu.vue';
+import IconRam from './IconRam.vue';
+import IconSupplise from './IconSupplise.vue';
+import IconMotherboerd from './IconMotherboerd.vue';
+
+const topRowCategories = shallowRef([
+  {
+    icon: IconGpu,
+    title: 'GPUs',
+    description: 'Top-performing graphics cards for gaming and workstations',
+  },
+  {
+    icon: IconCpu,
+    title: 'CPUs',
+    description: 'Top-performing graphics cards for gaming and workstations',
+  },
+  {
+    icon: IconRam,
+    title: 'RAM',
+    description: 'Top-performing graphics cards for gaming and workstations',
+  },
+]);
+
+const bottomRowCategories = shallowRef([
+    {
+        icon: IconSupplise,
+        title: 'Power Supplise',
+        description: 'Top-performing graphics cards for gaming and workstations'
+    },
+    {
+        icon: IconMotherboerd,
+        title: 'Motherboards',
+        description: 'Top-performing graphics cards for gaming and workstations'
+    }
+]);
+</script>
+<style scoped>
+   @reference "../assets/main.css";
+   h2{
+    @apply leading-12 text-4xl font-semibold py-5 w-130  text-white;
+   }
+   p{
+    @apply text-white;
+   }
+   h3{
+    @apply text-white font-bold text-xl my-5;
+   }
+   .icon_container{
+    @apply w-20 h-20 flex items-center justify-center  bg-[#192650] rounded-xl;
+   }
+   .cards_grided{
+    @apply grid  grid-cols-3 gap-5 ;
+   }
+   .card_box{
+    @apply w-full p-5 bg-[#0c172d] rounded-xl flex flex-col items-center justify-center;
+   }
+   .paragraph_width{
+    @apply w-[300px] text-center font-sans ;
+   }
+</style>
+
+
+
+
+
+src/components/CategoryCard.vue
+
+
+<template>
+  <div class="card_box">
+    <div class="icon_container">
+      <slot name="icon"></slot>
+    </div>
+      <h3>{{ title }}</h3>
+      <p class="paragraph_width text-white">{{ description }}</p>
+  </div>
+</template>
+
+<script setup>
+defineProps({
+  title: String,
+  description: String,
+});
+</script>
+
+<style scoped>
+  @reference "../assets/main.css";
+   h3{
+    @apply text-white font-bold text-xl my-5;
+   }
+   .icon_container{
+    @apply w-20 h-20 flex items-center justify-center  bg-[#192650] rounded-xl;
+   }
+   .card_box{
+    @apply w-full p-5 bg-[#0c172d] rounded-xl flex flex-col items-center justify-center;
+   }
+   .paragraph_width{
+    @apply w-[300px] text-center font-sans ;
+   }
+</style>
+
+
+src/components/PerformanceBenchMark.vue
+
+
+<template>
+  <section class="bg-[#06101e] pt-10 pb-25 defrence">
+    <div class="flex justify-center items-center gap-[100px]">
+      <section>
+        <img class="col-spne-3 fill-cyan-500 drop-shadow-lg drop-shadow-cyan-500/100 rounded-[30px] max-xl mr-[100px]" src="../assets/images/performance.png" alt="performance-image">
+      </section>
+      <section>
+        <h1>Performance You Can Trust</h1>
+        <p>Explore comprehensive benchmark results for a wide range of GPUs. This section provides detailed performance metrics from both synthetic benchmarks and real-world gaming tests cards.</p>
+        <div class="mb-15">
+          <ul>
+            <li v-for="feature in features" :key="feature">
+              <img class="inline w-4 mr-2" :src="check" alt="check_image">
+              {{ feature }}
+            </li>
+          </ul>
+        </div>
+        <a href="#" class= "btn">
+          View All Benchmarks
+        </a>
+      </section>
+    </div>
+  </section>
+</template>
+<script setup>
+import check from '@/assets/images/check.png';
+
+const features = [
+  'Synthetic Benchmark Results',
+  'Real-World Gaming Performance',
+  'Resolution-Based Analysis',
+  'Overclocking Results',
+  'Efficiency Metrics',
+];
+</script>
+<style scoped>
+  @reference "../assets/main.css";
+  p,li{
+    @apply text-white ;
+  }
+  ul{
+  @apply mt-5 leading-9
+  }
+</style>
+
+
+
+src/components/CardGraphicList.vue
+
+
+<template>
+  <section class="bg-[#06101e] pb-25 defrence">
+    <div class="mb-10">
+      <h1>GraphicCard</h1>
+    </div>
+    <div>
+      <CardGraphicNameItems
+      v-for="card in GraphicCardInfos"
+      :key="card.id"
+      :card="card"
+      />
+    </div>
+
+  </section>
+</template>
+<script setup>
+import intel from '@/assets/images/intel.png'
+import CardGraphicNameItems from './CardGraphicNameItems.vue';
+import { ref } from 'vue';
+
+  const GraphicCardInfos = ref([
+    {
+      id:1,
+      name:"Arc",
+      serise:"B580",
+      Date:"October 2024",
+      img:intel
+    },
+    {
+      id:2,
+      name:"Xbox",
+      serise:"Series X 6nm GPU",
+      Date:"October 2024",
+      img:intel
+    },
+    {
+      id:3,
+      name:"GeForce RTX",
+      serise:"4070 TI SUPER AD102",
+      Date:"October 2024",
+      img:intel
+    },
+    {
+      id:4,
+      name:"Arc",
+      serise:"B580",
+      Date:"October 2024",
+      img:intel
+    },
+    {
+      id:5,
+      name:"GeForce RTX",
+      serise:"4070 TI SUPER AD102",
+      Date:"October 2024",
+      img:intel
+    },
+    {
+      id:6,
+      name:"Arc",
+      serise:"B580",
+      Date:"October 2024",
+      img:intel
+    },
+    {
+      id:7,
+      name:"Xbox",
+      serise:"Series X 6nm GPU",
+      Date:"October 2024",
+      img:intel
+    },
+    {
+      id:8,
+      name:"Arc",
+      serise:"B580",
+      Date:"October 2024",
+      img:intel
+    },
+    {
+      id:9,
+      name:"GeForce RTX",
+      serise:"4070 TI SUPER AD102",
+      Date:"October 2024",
+      img:intel
+    },
+    {
+      id:10,
+      name:"Xbox",
+      serise:"Series X 6nm GPU",
+      Date:"October 2024",
+      img:intel
+    },
+    {
+      id:11,
+      name:"Arc",
+      serise:"B580",
+      Date:"October 2024",
+      img:intel
+    },
+    {
+      id:12,
+      name:"Arc",
+      serise:"B580",
+      Date:"October 2024",
+      img:intel
+    },
+  ])
+</script>
+<style scoped>
+  @reference "../assets/main.css";
+  p,li{
+    @apply text-white ;
+  }
+  </style>
+
+
+
+src/components/CardGraphicNameItems.vue
+
+
+
+<template>
+  <div class="inline-block w-fit p-4 mr-9 mb-8 rounded-lg bg-white">
+    <div class="flex items-center gap-3 ">
+      <section>
+        <img class="w-10 " :src="card.img" alt="intel_picture">
+      </section>
+      <section>
+        <h2>{{ card.name }}</h2>
+        <H3>{{ card.serise }}</H3>
+        <div class="grid justify-end">
+          <p class="mt-auto text-right">{{ card.Date }}</p>
+        </div>
+      </section>
+    </div>
+  </div>
+</template>
+<script setup>
+  defineProps({
+    card: Object
+  });
+</script>
+<style scoped>
+  @reference "../assets/main.css";
+  h2{
+    @apply text-lg  font-sans ;
+  }
+  h3{
+    @apply  text-[#6090dc] text-xl font-semibold
+  }
+</style>
+
+
+
+src/components/ExploreCpuProductGaming.vue
+
+
+<template>
+  <section class="bg-[#06101e] pb-25 defrence">
+    <div class="flex flex-col items-center justify-center text-center mb-[45px]">
+      <h1 class="text-2xl">Explore Our Product Categories</h1>
+      <p class="text-center w-190">Discover a wide range of products tailored to meet your needs. From the latest innovations to timeless essentials, find what you're looking for in one place.</p>
+    </div>
+    <section class="container_card">
+      <div v-for="card in products"
+      :key="card.id"
+      class="w-full rounded-lg bg-[#1d2530]"
+      >
+        <img class="rounded-t-lg" :src="card.img" alt="images">
+        <div class="p-5">
+          <div class="flex items-center justify-between">
+            <h5>{{card.name}}</h5>
+            <p>
+              <svg class="w-5 inline " xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 24 24" fill="#405ab2">
+                      <path d="M8 12C7.44772 12 7 12.4477 7 13C7 13.5523 7.44772 14 8 14H16C16.5523 14 17 13.5523 17 13C17 12.4477 16.5523 12 16 12H8Z" />
+                      <path d="M7 17C7 16.4477 7.44772 16 8 16H12C12.5523 16 13 16.4477 13 17C13 17.5523 12.5523 18 12 18H8C7.44772 18 7 17.5523 7 17Z" />
+                      <path fill-rule="evenodd" clip-rule="evenodd" d="M8 3C8 2.44772 7.55228 2 7 2C6.44772 2 6 2.44772 6 3V4.10002C3.71776 4.56329 2 6.58104 2 9V17C2 19.7614 4.23858 22 7 22H17C19.7614 22 22 19.7614 22 17V9C22 6.58104 20.2822 4.56329 18 4.10002V3C18 2.44772 17.5523 2 17 2C16.4477 2 16 2.44772 16 3V4H8V3ZM20 10H4V17C4 18.6569 5.34315 20 7 20H17C18.6569 20 20 18.6569 20 17V10ZM4.17071 8C4.58254 6.83481 5.69378 6 7 6H17C18.3062 6 19.4175 6.83481 19.8293 8H4.17071Z"/>
+                  </svg>
+              {{card.date}}
+            </p>
+          </div>
+          <h2>{{card.title}}</h2>
+          <p
+          :class="{'line-clamp-3': !card.expanded}"
+          >
+            {{card.explanation}}
+          </p>
+          <button class="btn w-full"
+           @click="toggleExpand(card)"
+          >
+            {{card.expanded? 'viewLess' : 'ViewMore'}}
+          </button>
+        </div>
+      </div>
+    </section>
+  </section>
+</template>
+<script setup>
+import CaseComputerImage1 from '../assets/images/christian-wiediger-sax9kbf6fvc-unsplash.jpg'
+import CaseComputerImage2 from '../assets/images/christian-wiediger-kf_korybd1g-unsplash.jpg'
+import GPUImage from '../assets/images/thomas-foster-vWgoeEYdtIY-unsplash.jpg'
+import { reactive } from 'vue';
+
+  const products  = reactive([
+    {
+      id:1,
+      name:"James Dyson",
+      date:"December 10, 2024",
+      title:"Top CPUs for Gaming and Productivity",
+      explanation:"Back in 2019, Gucci brought video games to its app with a new section called Gucci Arcade inspired by creative collaborations with artists and designers. This innovative feature allowed users to engage with the brand in an interactive way, blending fashion with gaming culture. Since then, Gucci has continued to explore unique digital experiences that push the boundaries of traditional retail",
+      img:CaseComputerImage1,
+      expanded:false
+    },
+    {
+      id:2,
+      name:"James Dyson",
+      date:"December 10, 2024",
+      title:"Top CPUs for Gaming and Productivity",
+      explanation:"Back in 2019, Gucci brought video games to its app with a new section called Gucci Arcade inspired by creative collaborations with artists and designers. This innovative feature allowed users to engage with the brand in an interactive way, blending fashion with gaming culture. Since then, Gucci has continued to explore unique digital experiences that push the boundaries of traditional retail",
+      img:GPUImage,
+      expanded:false
+    },
+    {
+      id:3,
+      name:"James Dyson",
+      date:"December 10, 2024",
+      title:"Top CPUs for Gaming and Productivity",
+      explanation:"Back in 2019, Gucci brought video games to its app with a new section called Gucci Arcade inspired by creative collaborations with artists and designers. This innovative feature allowed users to engage with the brand in an interactive way, blending fashion with gaming culture. Since then, Gucci has continued to explore unique digital experiences that push the boundaries of traditional retail",
+      img:CaseComputerImage2,
+      expanded:false
+    },
+  ])
+
+  function toggleExpand(card){
+    card.expanded = !card.expanded
+  }
+</script>
+<style scoped>
+  @reference '../assets/main.css';
+  p ,h5{
+    @apply text-white
+  }
+  h1{
+    @apply leading-12 text-4xl font-semibold py-5 w-130  text-white;
+   }
+  h2{
+    @apply text-xl font-semibold py-5  text-[#405ab2];
+   }
+  .container_card{
+    @apply grid grid-cols-3 gap-5 items-start;
+  }
+</style>
+
+
+src/components/FooterComponent.vue
+
+
+<template>
+  <footer class="footer_w-h bg-[#040e1a]">
+    <div class="defrence ">
+      <section class="footer_top-sec grid grid-cols-[1fr_150px_150px_100px] gap-6 py-7">
+        <div class="w-80">
+          <img src="../assets/images/gpu.png" alt="gpu" class="footer_icon">
+          <p>Become your own boss, choose your own schedule, and work in your preferred areas</p>
+        </div>
+        <div>
+          <ul>
+            <li>Service</li>
+            <li>Contact Us</li>
+            <li>FAQ</li>
+            <li>About Us</li>
+          </ul>
+        </div>
+        <div>
+          <ul>
+            <li>Registration</li>
+            <li>Login</li>
+          </ul>
+        </div>
+        <div class="flex gap-4">
+          <a href="#">
+            <img src="../assets/images/twitter.png" alt="" class="app_icons">
+          </a>
+          <a href="#">
+            <img src="../assets/images/instagram.png" alt="" class="app_icons">
+          </a>
+          <a href="#">
+            <img src="../assets/images/whatsapp.png" alt="" class="app_icons">
+          </a>
+        </div>
+      </section>
+      <div class="w-full bg-[#5a6069] h-0.25"></div>
+      <section class="footer_but-sec flexer py-5">
+        <div>
+          <p>© {{currentYear}} XYZ, all right reserved.</p>
+        </div>
+        <div>
+          <p>privacy and policy</p>
+        </div>
+      </section>
+    </div>
+  </footer>
+</template>
+<script setup>
+  const currentYear = new Date().getFullYear();
+</script>
+<style scoped>
+  @reference "../assets/main.css";
+  p , li{
+    @apply text-[#cbccd3] font-medium;
+  }
+  .footer_w-h{
+    @apply h-70 ;
+  }
+  .app_icons{
+    @apply w-9
+  }
+  .footer_icon{
+    @apply w-20
+  }
+
+</style>
+
